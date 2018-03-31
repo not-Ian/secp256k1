@@ -34,7 +34,7 @@ from setup_support import absolute, build_flags, has_system_lib
 
 # Version of libsecp256k1 to download if none exists in the `libsecp256k1`
 # directory
-LIB_TARBALL_URL = "https://github.com/bitcoin-core/secp256k1/archive/c5b32e16c4d2560ce829caf88a413fc06fd83d09.tar.gz"
+LIB_TARBALL_URL = "https://github.com/sipa/secp256k1-zkp/archive/35932bb24e83257b737a8ab4da0816972f4c252a.tar.gz"
 
 
 # We require setuptools >= 3.3
@@ -45,13 +45,13 @@ if [int(i) for i in setuptools_version.split('.')] < [3, 3]:
     )
 
 # Ensure pkg-config is available
-try:
-    subprocess.check_call(['pkg-config', '--version'])
-except OSError:
-    raise SystemExit(
-        "'pkg-config' is required to install this package. "
-        "Please see the README for details."
-    )
+#try:
+#    subprocess.check_call(['pkg-config', '--version'])
+#except OSError:
+#    raise SystemExit(
+#        "'pkg-config' is required to install this package. "
+#        "Please see the README for details."
+#    )
 
 
 def download_library(command):
@@ -123,6 +123,9 @@ class build_clib(_build_clib):
                 'library_dirs': [],
                 'define': [],
             }
+        self.build_flags["include_dirs"] = [
+            'libsecp256k1/include',
+        ]
 
     def get_source_files(self):
         # Ensure library has been downloaded (sdist might have been skipped)
@@ -134,16 +137,38 @@ class build_clib(_build_clib):
             for filename in filenames
         ]
 
-    def build_libraries(self, libraries):
-        raise Exception("build_libraries")
+    #def build_libraries(self, libraries):
+    #    raise Exception("build_libraries")
 
     def check_library_list(self, libraries):
         raise Exception("check_library_list")
 
-    def get_library_names(self):
-        return build_flags('libsecp256k1', 'l', os.path.abspath(self.build_temp))
+    #def get_library_names(self):
+    #    return build_flags('libsecp256k1', 'l', os.path.abspath(self.build_temp))
 
     def run(self):
+        self.libraries = [
+            ( 'secp256k1', {'sources': [
+              'libsecp256k1/src/secp256k1.c'
+             ], 'include_dirs': [ 'libsecp256k1/src', 'libsecp256k1' ]} )
+        ]
+        self.define = [
+            ('USE_NUM_NONE', 1),
+            ('USE_FIELD_10X26', 1),
+#            ('USE_FIELD_5X52', 1),
+            ('USE_FIELD_INV_BUILTIN', 1),
+#            ('USE_FIELD_INV_NU', 1),
+#            ('USE_SCALAR_4X64', 1),
+            ('USE_SCALAR_8X32', 1),
+            ('USE_SCALAR_INV_BUILTIN', 1),
+#           ('USE_SCALAR_INV_NUM', )
+            ('ENABLE_MODULE_ECDH', 1),
+            ('ENABLE_MODULE_SCHNORR', 1),
+            ('ENABLE_MODULE_RECOVERY', 1),
+            ('ENABLE_MODULE_RANGEPROOF', 1),
+        ]
+        return _build_clib.run(self)
+        # Note: bypass UNIX-only build path
         if has_system_lib():
             log.info("Using system library")
             return
@@ -192,7 +217,7 @@ class build_clib(_build_clib):
             "--with-pic",
             "--enable-module-recovery",
             "--prefix",
-            os.path.abspath(self.build_clib),
+            os.path.abspath(self.build_clib)
         ]
         if os.environ.get('SECP_BUNDLED_WITH_BIGNUM'):
             log.info("Building with bignum support (requires libgmp)")
@@ -200,12 +225,13 @@ class build_clib(_build_clib):
         else:
             cmd.extend(["--without-bignum"])
 
-        if os.environ.get('SECP_BUNDLED_EXPERIMENTAL'):
+        if os.environ.get('SECP_BUNDLED_EXPERIMENTAL') or True:
             log.info("Building experimental")
             cmd.extend([
                 "--enable-experimental",
                 "--enable-module-ecdh",
                 "--enable-module-schnorr",
+                "--enable-module-rangeproof",
             ])
 
         log.debug("Running configure: {}".format(" ".join(cmd)))
@@ -254,13 +280,13 @@ class develop(_develop):
 
 
 setup(
-    name="secp256k1",
+    name="secp256k1prp",
     version="0.13.2",
 
-    description='FFI bindings to libsecp256k1',
-    url='https://github.com/ludbb/secp256k1-py',
-    author='Ludvig Broberg',
-    author_email='lud@tutanota.com',
+    description='FFI bindings to libsecp256k1-zkp',
+    url='https://github.com/jhtitor/secp256k1prp-py',
+    author='John Titor',
+    author_email='john.titor@openmailbox.org',
     license='MIT',
 
     setup_requires=['cffi>=1.3.0', 'pytest-runner==2.6.2'],
@@ -268,7 +294,7 @@ setup(
     tests_require=['pytest==2.8.7'],
 
     packages=find_packages(exclude=('_cffi_build', '_cffi_build.*', 'libsecp256k1')),
-    ext_package="secp256k1",
+    ext_package="secp256k1prp",
     cffi_modules=[
         "_cffi_build/build.py:ffi"
     ],

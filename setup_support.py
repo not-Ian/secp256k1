@@ -91,6 +91,7 @@ _has_system_lib = None
 
 
 def has_system_lib():
+    return False # !!! NO
     global _has_system_lib
     if _has_system_lib is None:
         _has_system_lib = _find_lib()

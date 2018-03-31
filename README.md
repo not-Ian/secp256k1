@@ -1,25 +1,40 @@
-# secp256k1-py [![Build Status](https://travis-ci.org/ludbb/secp256k1-py.svg?branch=master)](https://travis-ci.org/ludbb/secp256k1-py) [![Coverage Status](https://coveralls.io/repos/ludbb/secp256k1-py/badge.svg?branch=master&service=github)](https://coveralls.io/github/ludbb/secp256k1-py?branch=master)
+# secp256k1-py _prp FORK
+
+Originally:
 
 Python FFI bindings for [libsecp256k1](https://github.com/bitcoin/secp256k1)
 (an experimental and optimized C library for EC operations on curve secp256k1).
 
+This fork:
+
+Uses a specific version of libsecp256k1, with Pedersen / Pangeproof functions,
+useful for BitShares and other coins.
+
+This fork is probably in conflic with both upstream and other secp256k1 wrappers.
+For completeness sake, this version includes both Schnorr, Pedersen and all
+the rest of the functions, so it should be usable in most situations.
+
 ## Installation
 
 ```
-pip install secp256k1
+pip install secp256k1prp-SOME_WHEEL_FILE.whl
 ```
+
+Note: This fork is not in pypi (yet).
 
 ### Precompiled binary packages (wheels)
 
-Precompiled binary wheels is available for Python 2.7, 3.3, 3.4, and 3.5 on Linux. To take advantage of those you need to use pip >= 8.1.0.
+Precompiled binary wheels are available for some systems. To take advantage of those you need to use pip >= 8.1.0.
 
+See Releases.
+<s>
 In case you don't want to use the binary packages you can prevent pip from
 using them with the following command:
 
 ```
-pip install --no-binary secp256k1
+pip install --no-binary secp256k1prp
 ```
-
+</s>
 
 ### Installation with compilation
 
@@ -32,6 +47,7 @@ libsecp256k1 installed on your system:
 
 ###### Using a system installed libsecp256k1
 
+<s>
 If the library is already installed it should usually be automatically detected
 and used.
 However if libsecp256k1 is installed in a non standard location you can use the
@@ -40,7 +56,9 @@ environment variables `INCLUDE_DIR` and `LIB_DIR` to point the way:
 ```
 INCLUDE_DIR=/opt/somewhere/include LIB_DIR=/opt/somewhere/lib pip install --no-binary secp256k1
 ```
+</s>
 
+Note: not supported.
 
 ###### Using the bundled libsecp256k1
 
@@ -51,7 +69,7 @@ will be enabled since it's the only one not currently considered as
 `SECP_BUNDLED_EXPERIMENTAL` environment variable:
 
 ```
-SECP_BUNDLED_EXPERIMENTAL=1 pip install --no-binary secp256k1
+SECP_BUNDLED_EXPERIMENTAL=1 pip install --no-binary secp256k1prp
 ```
 
 For the bundled version to compile successfully you need to have a C compiler
@@ -74,6 +92,26 @@ On OS X the necessary homebrew packages are:
 * `libffi`
 * `gmp`
 
+Windows XP + MSYS2:
+
+* use msys2-i686-20160205.exe [1]
+* DO NOT upgrade pacman package index (`-Syu, -Su` - don't run those)
+* `python`
+* `gcc`
+* `make`
+* `python -m ensurepip --default-pip`
+* `libffi-devel`
+* `gmp`
+
+[1]: http://repo.msys2.org/distrib/i686/msys2-i686-20160205.exe
+
+Windows XP native:
+
+* install Visual C++ 2010 [2]
+* install python 3.4.4 [3]
+
+[2]: https://download.my.visualstudio.com/db/en_visual_studio_2010_express_x86_dvd_510419.iso
+[3]: https://www.python.org/ftp/python/3.4.4/python-3.4.4.msi
 
 ## Command line usage
 
