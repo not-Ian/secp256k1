@@ -7,8 +7,10 @@ Python FFI bindings for [libsecp256k1](https://github.com/bitcoin/secp256k1)
 
 This fork:
 
-Uses a specific version of libsecp256k1, with Pedersen / Pangeproof functions,
-useful for BitShares and other coins.
+Uses a [specific version of libsecp256k1][zkp], with Pedersen / Pangeproof
+functions, useful for BitShares and other coins.
+
+ [zkp]: https://github.com/sipa/secp256k1-zkp/commit/35932bb24e83257b737a8ab4da0816972f4c252a
 
 This fork is probably in conflic with both upstream and other secp256k1 wrappers.
 For completeness sake, this version includes both Schnorr, Pedersen and all
@@ -17,16 +19,23 @@ the rest of the functions, so it should be usable in most situations.
 ## Installation
 
 ```
-pip install secp256k1prp-SOME_WHEEL_FILE.whl
+pip install secp256k1prp
 ```
-
-Note: This fork is not in pypi (yet).
 
 ### Precompiled binary packages (wheels)
 
-Precompiled binary wheels are available for some systems. To take advantage of those you need to use pip >= 8.1.0.
+Precompiled binary wheels are available for some systems.
+To take advantage of those you need to use pip >= 8.1.0.
 
-See Releases.
+If you're downloading manually, run
+
+```
+pip install secp256k1prp-SOME_WHEEL_FILE.whl
+```
+
+See [Releases](https://github.com/jhtitor/secp256k1prp-py/releases)
+and [pypi](https://pypi.org/project/secp256k1prp/#files).
+
 <s>
 In case you don't want to use the binary packages you can prevent pip from
 using them with the following command:
@@ -94,7 +103,7 @@ On OS X the necessary homebrew packages are:
 
 Windows XP + MSYS2:
 
-* use msys2-i686-20160205.exe [1]
+* use [msys2-i686-20160205.exe][1]
 * DO NOT upgrade pacman package index (`-Syu, -Su` - don't run those)
 * `python`
 * `gcc`
@@ -107,11 +116,25 @@ Windows XP + MSYS2:
 
 Windows XP native:
 
-* install Visual C++ 2010 [2]
-* install python 3.4.4 [3]
+* install [Visual C++ 2010][2]
+* install [python 3.4.4][3]
 
 [2]: https://download.my.visualstudio.com/db/en_visual_studio_2010_express_x86_dvd_510419.iso
 [3]: https://www.python.org/ftp/python/3.4.4/python-3.4.4.msi
+
+Windows 7+
+
+* install [.NET Framework 4.6][4] or higher
+* install [Visual C++ 14.0][5] from "Microsoft Visual C++ Build Tools"
+* install [python 3.6.5][6] or later
+
+[4]: https://www.microsoft.com/en-us/download/details.aspx?id=48137
+[5]: https://landinghub.visualstudio.com/visual-cpp-build-tools
+[6]: https://www.python.org/download/windows
+
+Note: for python 3.5 builds, download and install [Visual Studio 2015][7]
+
+[7]: https://www.microsoft.com/en-en/SoftMicrosoft/vs2015professional.aspx
 
 ## Command line usage
 
