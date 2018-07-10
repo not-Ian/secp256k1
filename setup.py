@@ -148,7 +148,7 @@ class build_clib(_build_clib):
 
     def run(self):
         self.libraries = [
-            ( 'secp256k1', {'sources': [
+            ( 'secp256k1prp', {'sources': [
               'libsecp256k1/src/secp256k1.c'
              ], 'include_dirs': [ 'libsecp256k1/src', 'libsecp256k1' ]} )
         ]
@@ -281,7 +281,7 @@ class develop(_develop):
 
 setup(
     name="secp256k1prp",
-    version="0.13.2",
+    version="0.13.3",
 
     description='FFI bindings to libsecp256k1-zkp',
     url='https://github.com/jhtitor/secp256k1prp-py',

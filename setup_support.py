@@ -68,6 +68,7 @@ def build_flags(library, type_, path):
 
 
 def _find_lib():
+    return True # !!! NO
     from cffi import FFI
     ffi = FFI()
     try:
