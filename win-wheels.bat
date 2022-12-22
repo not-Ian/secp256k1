@@ -2,7 +2,7 @@
 
 rem clean build_clib build_ext
 
-del secp256k1prp.egg-info
+del secp256k1.egg-info
 py -3.4 setup.py bdist_wheel
 py -3.4-32 setup.py bdist_wheel
 py -3.5 setup.py bdist_wheel

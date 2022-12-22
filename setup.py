@@ -148,7 +148,7 @@ class build_clib(_build_clib):
 
     def run(self):
         self.libraries = [
-            ( 'secp256k1prp', {'sources': [
+            ( 'secp256k1', {'sources': [
               'libsecp256k1/src/secp256k1.c'
              ], 'include_dirs': [ 'libsecp256k1/src', 'libsecp256k1' ]} )
         ]
@@ -280,11 +280,11 @@ class develop(_develop):
 
 
 setup(
-    name="secp256k1prp",
-    version="0.13.3",
+    name="secp256k1",
+    version="0.14.0",
 
     description='FFI bindings to libsecp256k1-zkp',
-    url='https://github.com/jhtitor/secp256k1prp-py',
+    url='https://github.com/jhtitor/secp256k1-py',
     author='John Titor',
     author_email='john.titor@openmailbox.org',
     license='MIT',
@@ -294,7 +294,7 @@ setup(
     tests_require=['pytest==2.8.7'],
 
     packages=find_packages(exclude=('_cffi_build', '_cffi_build.*', 'libsecp256k1')),
-    ext_package="secp256k1prp",
+    ext_package="secp256k1",
     cffi_modules=[
         "_cffi_build/build.py:ffi"
     ],

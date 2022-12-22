@@ -59,7 +59,7 @@ if has_system_lib():
                         _base + [item[1] for item in combination],
                         name="_testcompile",
                         bundled=False,
-                        libraries=['secp256k1prp']
+                        libraries=['secp256k1']
                     )
                     with redirect(sys.stderr, os.devnull), workdir():
                         _test_ffi.compile()
@@ -71,7 +71,7 @@ if has_system_lib():
         ffi = _mk_ffi(
             _base + [i[1] for i in _available],
             bundled=False,
-            libraries=['secp256k1prp']
+            libraries=['secp256k1']
         )
         print("Using system libsecp256k1 with modules: {}".format(
             ", ".join(i[0] for i in _available))
@@ -89,6 +89,6 @@ if ffi is None:
     # By default we only build with recovery enabled since the other modules
     # are experimental
     if os.environ.get('SECP_BUNDLED_EXPERIMENTAL') or True:
-        ffi = _mk_ffi(_base + list(_modules.values()), libraries=['secp256k1prp'])
+        ffi = _mk_ffi(_base + list(_modules.values()), libraries=['secp256k1'])
     else:
-        ffi = _mk_ffi(_base + [_modules['recovery']], libraries=['secp256k1prp'])
+        ffi = _mk_ffi(_base + [_modules['recovery']], libraries=['secp256k1'])
